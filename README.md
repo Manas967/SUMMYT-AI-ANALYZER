@@ -4,127 +4,147 @@
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-SUMMYT is an advanced Generative AI web application that extracts transcripts from YouTube videos and uses Google's model to generate structured, highly accurate summaries. Beyond just summarizing, it features an interactive Q&A chat, allowing users to ask specific questions about the video's content—all without having to watch a single second.
+SUMMYT is a Generative AI web app that extracts transcripts from YouTube videos and uses Google’s Gemini model to generate structured summaries. It also includes an interactive Q&A chat so you can ask questions based strictly on the transcript.
+
+---
 
 ## ✨ Key Features
-* **Instant Summarization:** Distills hours of video content into concise overviews and bulleted key takeaways.
-* **Interactive Contextual Q&A:** Chat directly with the video context. Ask specific questions, and the AI will answer based *strictly* on the transcript.
-* **Bilingual Support:** Generate notes and receive answers in both **English** and **Hindi**.
-* **Smart Error Handling:** Gracefully handles videos with disabled transcripts or missing closed captions.
-* **Optimized Performance:** Utilizes session state caching to prevent redundant API calls, keeping the app incredibly fast.
+- **Instant Summarization:** Concise overview + key takeaways
+- **Interactive Contextual Q&A:** Ask questions strictly based on transcript context
+- **Bilingual Support:** English + Hindi
+- **Smart Error Handling:** Handles missing/disabled transcripts
+- **Optimized Performance:** Session caching to avoid redundant calls
 
 ## 🛠️ Tech Stack
-* **Frontend:** Streamlit
-* **AI/LLM:** Google GenAI SDK (`gemini-2.5-flash`)
-* **Data Extraction:** YouTube Transcript API
-* **Environment Management:** Python `python-dotenv`
+- **Frontend:** Streamlit
+- **AI/LLM:** Google GenAI SDK (`gemini-2.5-flash`)
+- **Transcript:** YouTube Transcript API
+- **Env:** `python-dotenv`
 
 ---
 
-## 🚀 Local Setup & Installation (Ubuntu/Linux)
+## 🔐 Environment Variables
 
-Follow these steps to run SUMMYT on your local machine.
+Create a `.env` file in the project root (same folder as `app.py`):
 
-### 1. Clone the Repository
-\`\`\`bash
-git clone https://github.com/Manas967/SUMMYT.git
-cd SUMMYT
-\`\`\`
+```env
+GEMINI_API_KEY=Your Api key
+```
 
-### 2. Set Up a Virtual Environment
-It is highly recommended to use a virtual environment to manage dependencies.
-\`\`\`bash
-python3 -m venv gemini_env
-source gemini_env/bin/activate
-\`\`\`
+> Never commit your real API key to GitHub.
 
-### 3. Install Dependencies
-\`\`\`bash
+---
+
+# ✅ How to Run (2 Ways)
+
+## 1) 🚀 Run Locally (Without Docker)
+
+### Step 1 — Clone the repository
+```bash
+git clone https://github.com/Manas967/SUMMYT-AI-ANALYZER.git
+cd SUMMYT-AI-ANALYZER
+```
+
+### Step 2 — Create & activate a virtual environment (recommended)
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### Step 3 — Install dependencies
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
-### 4. Configure Environment Variables
-Create a \`.env\` file in the root directory to securely store your API key.
-\`\`\`bash
+### Step 4 — Add `.env`
+Create/edit `.env`:
+```bash
 nano .env
-\`\`\`
-Add your Gemini API key to the file:
-\`\`\`env
-GEMINI_API_KEY="your_actual_api_key_here"
-\`\`\`
+```
 
-### 5. Run the Application
-\`\`\`bash
+Add:
+```env
+GEMINI_API_KEY=Your Api key
+```
+
+### Step 5 — Run the app
+```bash
 streamlit run app.py
-\`\`\`
-The application will open automatically in your browser at \`http://localhost:8501\`.
+```
+
+Open:
+```text
+http://localhost:8501
+```
 
 ---
 
-## 🐳 Docker Setup (Added)
+## 2) 🐳 Run With Docker
 
-If you are running this project with Docker, use the commands below.
+### Option A — Docker Compose (Recommended)
 
-### Build Image
-\`\`\`bash
-docker build -t my-app .
-\`\`\`
+This repo includes a `docker-compose.yml` with:
+- service name: `summyt`
+- container name: `summyt-ai-analyzer`
+- port mapping: `8501:8501`
+- env var: `GEMINI_API_KEY` loaded from your local `.env`
 
-### Run Container (Correct Port Mapping)
-This app runs on port \`8501\` inside the container, so map host port to \`8501\`.
-
-\`\`\`bash
-docker run -d --name summyt-app -p 8501:8501 my-app
-\`\`\`
-
-Open in browser:
-\`\`\`text
-http://localhost:8501
-\`\`\`
-
-### If You Stopped the Container and Want to Run Again
-If container already exists:
-
-\`\`\`bash
-docker start summyt-app
-\`\`\`
-
-If you want a clean restart:
-
-\`\`\`bash
-docker rm -f summyt-app
-docker run -d --name summyt-app -p 8501:8501 my-app
-\`\`\`
-
-### Docker Compose (Recommended)
-Start:
-
-\`\`\`bash
+#### Start (build + run)
+```bash
 docker compose up -d --build
-\`\`\`
+```
 
-Stop:
+#### View logs
+```bash
+docker logs -f summyt-ai-analyzer
+```
 
-\`\`\`bash
+#### Stop
+```bash
 docker compose down
-\`\`\`
+```
 
-Start again after stop:
-
-\`\`\`bash
+#### Start again (without rebuilding)
+```bash
 docker compose up -d
-\`\`\`
+```
 
-### Quick Checks
-\`\`\`bash
-docker ps
-docker logs --tail 50 summyt-ai-analyzer
-\`\`\`
+Open:
+```text
+http://localhost:8501
+```
+
+---
+
+### Option B — Docker CLI (Alternative)
+
+#### Build image
+```bash
+docker build -t summyt-ai-analyzer .
+```
+
+#### Run container (load env from `.env`)
+```bash
+docker run -d --name summyt-ai-analyzer --env-file .env -p 8501:8501 summyt-ai-analyzer
+```
+
+#### Logs / stop / start
+```bash
+docker logs -f summyt-ai-analyzer
+docker stop summyt-ai-analyzer
+docker start summyt-ai-analyzer
+```
+
+#### Clean restart
+```bash
+docker rm -f summyt-ai-analyzer
+docker run -d --name summyt-ai-analyzer --env-file .env -p 8501:8501 summyt-ai-analyzer
+```
 
 ---
 
 ## 💡 Usage
-1. Paste any valid YouTube video URL into the input field.
-2. Select your preferred output language (English or Hindi).
-3. Click **"Full info in one tap! 🏎️"** to extract the transcript and generate the summary.
-4. Once processed, use the **Q&A Section** at the bottom to ask specific questions about the video's content.
+1. Paste a valid YouTube video URL.
+2. Select output language (English / Hindi).
+3. Click **"Full info in one tap! 🏎️"** to generate the summary.
+4. Use the **Q&A Section** to ask questions about the video content.
