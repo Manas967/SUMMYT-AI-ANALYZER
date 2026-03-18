@@ -1,0 +1,10 @@
+.env
+venv/
+.venv/
+.venv-wsl/
+.vscode/
+.dockerignore/
+env/
+gemini_env/
+
+__pycache__/

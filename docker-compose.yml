@@ -1,0 +1,11 @@
+services:
+  summyt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: summyt-ai-analyzer
+    ports:
+      - "8501:8501"
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    restart: unless-stopped

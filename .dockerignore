@@ -1,0 +1,21 @@
+# VCS
+.git
+.gitignore
+
+# Python caches and virtual envs
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+.venv-wsl/
+
+# Local tooling
+.vscode/
+
+# Secrets and local env files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
